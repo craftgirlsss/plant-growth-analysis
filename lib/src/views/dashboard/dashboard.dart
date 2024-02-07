@@ -16,97 +16,199 @@ class _DashboardState extends State<Dashboard> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        SizedBox(
-            width: MediaQuery.of(context).size.width,
-            child: Image.asset(
-              'assets/images/bg.png',
-              fit: BoxFit.cover,
-            )),
-        GestureDetector(
-          onTap: focusManager,
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  backgroundColor: Colors.transparent,
-                  floating: true,
-                  pinned: true,
-                  snap: false,
-                  centerTitle: true,
-                  automaticallyImplyLeading: false,
-                  title: Text(
-                    'Dashboard',
-                    style: kDefaultTextStyle(
-                        fontSize: 22,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold),
-                  ),
-                  actions: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 16, top: 5),
-                      child: CircleAvatar(
-                        backgroundColor: Colors.red,
-                        child: Text(
-                          'A',
-                          style: kDefaultTextStyle(fontSize: 16),
-                        ),
-                      ),
-                    )
-                  ],
-                  bottom: AppBar(
-                    backgroundColor: Colors.transparent,
-                    automaticallyImplyLeading: false,
-                    title: Container(
-                      width: double.infinity,
-                      height: 40,
-                      color: Colors.transparent,
-                      child: Center(
-                          child: TextFormField(
-                              controller: searchController,
-                              keyboardType: TextInputType.text,
-                              autofocus: false,
-                              style: kDefaultTextStyle(
-                                  color: Colors.black87, fontSize: 15),
-                              decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(30.0),
-                                ),
-                                filled: true,
-                                prefixIcon: const Icon(CupertinoIcons.search,
-                                    color: Colors.black54),
-                                // filled: true,
-                                fillColor: Colors.white,
-                                hintText: 'Cari',
-                                hintStyle: kDefaultTextStyle(
-                                    color: Colors.black87, fontSize: 15),
-                                contentPadding: const EdgeInsets.fromLTRB(
-                                    20.0, 10.0, 20.0, 10.0),
-                                // border: OutlineInputBorder(
-                                //   borderSide: BorderSide.none,
-                                //   borderRadius: BorderRadius.circular(32.0),
-                              ))),
-                    ),
-                  ),
-                ),
-                // Other Sliver Widgets
-                SliverList(
-                  delegate: SliverChildListDelegate([
-                    const SizedBox(
-                      height: 400,
-                      child: Center(
-                        child: Text(
-                          'This is an awesome shopping platform',
-                        ),
-                      ),
-                    ),
-                    Container(
-                      height: 1000,
-                      color: Colors.pink,
-                    ),
-                  ]),
-                ),
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.green.shade50,
+                Colors.green.shade100,
+                Colors.green.shade200,
+                Colors.green.shade300,
               ],
+            ),
+          ),
+          child: GestureDetector(
+            onTap: focusManager,
+            child: Scaffold(
+              backgroundColor: Colors.transparent,
+              body: Stack(
+                children: [
+                  SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.asset(
+                      'assets/images/bg.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                  CustomScrollView(
+                    slivers: [
+                      SliverAppBar(
+                        backgroundColor: Colors.transparent,
+                        floating: true,
+                        elevation: 0,
+                        pinned: true,
+                        snap: false,
+                        centerTitle: true,
+                        automaticallyImplyLeading: false,
+                        leadingWidth: 200,
+                        leading: Padding(
+                          padding: const EdgeInsets.only(left: 20, top: 10),
+                          child: Text('Putra Budianto',
+                              style: TextStyle(
+                                fontSize: 25,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                shadows: [
+                                  Shadow(
+                                    color: Colors
+                                        .black54, // Choose the color of the shadow
+                                    blurRadius:
+                                        40, // Adjust the blur radius for the shadow effect
+                                    // Set the horizontal and vertical offset for the shadow
+                                  ),
+                                ],
+                              )),
+                        ),
+                        actions: [
+                          Padding(
+                            padding: const EdgeInsets.only(right: 16, top: 5),
+                            child: CircleAvatar(
+                              backgroundColor: Colors.purple.shade400,
+                              child: Text(
+                                'P',
+                                style: kDefaultTextStyle(fontSize: 16),
+                              ),
+                            ),
+                          )
+                        ],
+                        bottom: AppBar(
+                          backgroundColor: Colors.transparent,
+                          elevation: 0,
+                          automaticallyImplyLeading: false,
+                          title: Container(
+                            width: double.infinity,
+                            height: 50,
+                            color: Colors.transparent,
+                            child: Center(
+                              child: Material(
+                                borderRadius: BorderRadius.circular(30),
+                                elevation: 20,
+                                animationDuration:
+                                    const Duration(milliseconds: 500),
+                                shadowColor: Colors.black54,
+                                child: TextFormField(
+                                  controller: searchController,
+                                  keyboardType: TextInputType.text,
+                                  autofocus: false,
+                                  style: kDefaultTextStyle(
+                                      color: Colors.black87, fontSize: 15),
+                                  decoration: InputDecoration(
+                                    border: OutlineInputBorder(
+                                      borderSide: BorderSide.none,
+                                      borderRadius: BorderRadius.circular(30.0),
+                                    ),
+                                    filled: true,
+                                    prefixIcon: const Icon(
+                                        CupertinoIcons.search,
+                                        color: Colors.black54),
+                                    // filled: true,
+                                    fillColor: Colors.white,
+                                    hintText: 'Cari',
+                                    hintStyle: kDefaultTextStyle(
+                                        color: Colors.black87, fontSize: 15),
+                                    contentPadding: const EdgeInsets.fromLTRB(
+                                        20.0, 10.0, 20.0, 10.0),
+                                    // border: OutlineInputBorder(
+                                    //   borderSide: BorderSide.none,
+                                    //   borderRadius: BorderRadius.circular(32.0),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      // Other Sliver Widgets
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 20, right: 20, top: 35),
+                              child: Container(
+                                height: 120,
+                                decoration: BoxDecoration(
+                                    color: index % 2 == 0
+                                        ? Colors.green.shade100
+                                        : Colors.greenAccent,
+                                    gradient: LinearGradient(colors: [
+                                      Colors.white.withOpacity(0.4),
+                                      Colors.white.withOpacity(0.4),
+                                      Colors.white.withOpacity(0.6),
+                                      Colors.white.withOpacity(0.6)
+                                    ]),
+                                    boxShadow: [
+                                      BoxShadow(
+                                          blurRadius: 30, color: Colors.black26)
+                                    ],
+                                    borderRadius: BorderRadius.circular(40)),
+                                alignment: Alignment.center,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Image.asset(
+                                      'assets/images/sample.png',
+                                    ),
+                                    const SizedBox(width: 10),
+                                    Expanded(
+                                      child: Container(
+                                        padding: const EdgeInsets.only(
+                                            top: 10, bottom: 0, right: 30),
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Flexible(
+                                              child: Text(
+                                                "Pohon Mahoni",
+                                                style: kDefaultTextStyle(
+                                                    fontSize: 20,
+                                                    color: Colors.black87,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ),
+                                            Flexible(
+                                              child: Text(
+                                                "Loeafbjksasdiuehbfjkasdinsdishhleahcunewrsaknfdciwebfkusflsjfskd",
+                                                maxLines: 3,
+                                                overflow: TextOverflow.clip,
+                                                style: kDefaultTextStyle(
+                                                  fontSize: 13,
+                                                  color: Colors.black87,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                          // 40 list items
+                          childCount: 40,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

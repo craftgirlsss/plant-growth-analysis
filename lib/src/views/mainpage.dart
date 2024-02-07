@@ -18,45 +18,54 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       backgroundColor: Colors.white,
-      bottomNavigationBar: NavigationBarTheme(
-        data: NavigationBarThemeData(
-            labelTextStyle: MaterialStateProperty.all(
-          const TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.normal,
-            color: Colors.black,
+      bottomNavigationBar: Container(
+        child: ClipRRect(
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(40),
+            topLeft: Radius.circular(40),
           ),
-        )),
-        child: NavigationBar(
-          labelBehavior: labelBehavior,
-          elevation: 0,
-          backgroundColor: Colors.white,
-          selectedIndex: currentPageIndex,
-          indicatorColor: Colors.black12,
-          onDestinationSelected: (int index) {
-            setState(() {
-              currentPageIndex = index;
-            });
-          },
-          destinations: const <Widget>[
-            NavigationDestination(
-              selectedIcon: Icon(CupertinoIcons.home),
-              icon: Icon(
-                CupertinoIcons.home,
+          child: NavigationBarTheme(
+            data: NavigationBarThemeData(
+                labelTextStyle: MaterialStateProperty.all(
+              const TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.normal,
                 color: Colors.black,
               ),
-              label: 'Dashboard',
+            )),
+            child: NavigationBar(
+              labelBehavior: labelBehavior,
+              elevation: 0,
+              backgroundColor: Colors.green.shade200,
+              selectedIndex: currentPageIndex,
+              indicatorColor: Colors.black12,
+              onDestinationSelected: (int index) {
+                setState(() {
+                  currentPageIndex = index;
+                });
+              },
+              destinations: const <Widget>[
+                NavigationDestination(
+                  selectedIcon: Icon(CupertinoIcons.home),
+                  icon: Icon(
+                    CupertinoIcons.home,
+                    color: Colors.black,
+                  ),
+                  label: 'Dashboard',
+                ),
+                NavigationDestination(
+                  selectedIcon: Icon(CupertinoIcons.settings),
+                  icon: Icon(
+                    CupertinoIcons.settings,
+                    color: Colors.black,
+                  ),
+                  label: 'Pengaturan',
+                ),
+              ],
             ),
-            NavigationDestination(
-              selectedIcon: Icon(CupertinoIcons.settings),
-              icon: Icon(
-                CupertinoIcons.settings,
-                color: Colors.black,
-              ),
-              label: 'Pengaturan',
-            ),
-          ],
+          ),
         ),
       ),
       body: <Widget>[

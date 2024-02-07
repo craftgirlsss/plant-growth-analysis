@@ -47,7 +47,7 @@ class _ViewLoginState extends State<ViewLogin> {
       decoration: InputDecoration(
           prefixIcon: const Icon(CupertinoIcons.person, color: Colors.black54),
           filled: true,
-          fillColor: Colors.white54,
+          fillColor: Colors.black12,
           hintText: 'Username',
           hintStyle: kDefaultTextStyle(color: Colors.black87, fontSize: 15),
           contentPadding: const EdgeInsets.fromLTRB(20.0, 10.0, 20.0, 10.0),
@@ -65,7 +65,7 @@ class _ViewLoginState extends State<ViewLogin> {
         style: kDefaultTextStyle(color: Colors.black87, fontSize: 15),
         decoration: InputDecoration(
           prefixIcon: const Icon(CupertinoIcons.padlock, color: Colors.black54),
-          fillColor: Colors.white54,
+          fillColor: Colors.black12,
           filled: true,
           hintStyle: kDefaultTextStyle(color: Colors.black87, fontSize: 15),
           hintText: 'Kata Sandi',
@@ -99,50 +99,60 @@ class _ViewLoginState extends State<ViewLogin> {
         GestureDetector(
           onTap: () => focusManager(),
           child: Scaffold(
-            backgroundColor: Colors.green.shade600,
+            backgroundColor: Colors.white,
             body: SafeArea(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                child: Column(
-                  children: [
-                    const SizedBox(height: 20),
-                    Text(
-                      "Masuk",
-                      style: kDefaultTextStyleBold(
-                          color: Colors.white, fontSize: 23),
-                    ),
-                    const SizedBox(height: 70),
-                    Container(
-                      alignment: Alignment.center,
-                      height: MediaQuery.of(context).size.height,
-                      child: Form(
-                        key: _keyFormLogin,
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              logo,
-                              const SizedBox(height: 10),
-                              Hero(
-                                tag: "sekolah",
-                                child: DefaultTextStyle(
-                                  style: kDefaultTextStyleBold(fontSize: 20),
-                                  child: const Text(
-                                    "Aplikasi Monitoring\nBibit Tumbuhan",
-                                    textAlign: TextAlign.center,
+              child: Stack(
+                children: [
+                  SizedBox(
+                      width: MediaQuery.of(context).size.width,
+                      child: Image.asset(
+                        'assets/images/bg.png',
+                        fit: BoxFit.cover,
+                      )),
+                  SingleChildScrollView(
+                    padding: const EdgeInsets.only(
+                        left: 20.0, right: 20.0, top: 100),
+                    child: Column(
+                      children: [
+                        Container(
+                          alignment: Alignment.center,
+                          height: MediaQuery.of(context).size.height,
+                          child: Form(
+                            key: _keyFormLogin,
+                            child: Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  logo,
+                                  Text(
+                                    "Plant Growth Checker",
+                                    style: kDefaultTextStyleBold(
+                                        color: Colors.black54, fontSize: 23),
                                   ),
-                                ),
-                              ),
-                              const SizedBox(height: 20),
-                              emailField,
-                              const SizedBox(height: 10.0),
-                              passwordField,
-                              const SizedBox(height: 20),
-                              Obx(
-                                () => kDefaultButtons(
-                                    backgroundColor: Colors.black87,
-                                    onPressed:
-                                        accountsController.isLoading.value ==
+                                  Hero(
+                                    tag: "sekolah",
+                                    child: DefaultTextStyle(
+                                      style:
+                                          kDefaultTextStyleBold(fontSize: 20),
+                                      child: Text(
+                                        "Aplikasi Monitoring\nBibit Tumbuhan",
+                                        textAlign: TextAlign.center,
+                                        style: kDefaultTextStyle(
+                                            fontSize: 23,
+                                            color: Colors.black54),
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  emailField,
+                                  const SizedBox(height: 10.0),
+                                  passwordField,
+                                  const SizedBox(height: 20),
+                                  Obx(
+                                    () => kDefaultButtons(
+                                        backgroundColor: Colors.green,
+                                        onPressed: accountsController
+                                                    .isLoading.value ==
                                                 true
                                             ? () {}
                                             : () async {
@@ -171,18 +181,21 @@ class _ViewLoginState extends State<ViewLogin> {
                                                 //           child: const Text("OK")));
                                                 // }
                                               },
-                                    title: accountsController.isLoading.value ==
-                                            true
-                                        ? "Loading"
-                                        : "Masuk"),
+                                        title: accountsController
+                                                    .isLoading.value ==
+                                                true
+                                            ? "Loading"
+                                            : "Masuk"),
+                                  ),
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
-                      ),
+                      ],
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           ),
