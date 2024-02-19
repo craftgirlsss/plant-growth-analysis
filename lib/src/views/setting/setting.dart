@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:plant_growth/src/components/alerts.dart';
 import 'package:plant_growth/src/components/textstyle.dart';
 import 'package:plant_growth/src/helpers/focus.dart';
+
+import 'change_password.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({super.key});
@@ -85,6 +89,7 @@ class _SettingPageState extends State<SettingPage> {
                             ),
                           ),
                           ListTile(
+                            onTap: () => Get.to(() => const ChangePassword()),
                             title: Text(
                               "Ganti Password",
                               style: kDefaultTextStyle(
@@ -101,6 +106,10 @@ class _SettingPageState extends State<SettingPage> {
                             ),
                           ),
                           ListTile(
+                            onTap: () {
+                              AlertDialogCustom.showAlertDialog(context,
+                                  onOK: () {});
+                            },
                             title: Text(
                               "Keluar",
                               style: kDefaultTextStyle(

@@ -100,103 +100,99 @@ class _ViewLoginState extends State<ViewLogin> {
           onTap: () => focusManager(),
           child: Scaffold(
             backgroundColor: Colors.white,
-            body: SafeArea(
-              child: Stack(
-                children: [
-                  SizedBox(
-                      width: MediaQuery.of(context).size.width,
-                      child: Image.asset(
-                        'assets/images/bg.png',
-                        fit: BoxFit.cover,
-                      )),
-                  SingleChildScrollView(
-                    padding: const EdgeInsets.only(
-                        left: 20.0, right: 20.0, top: 100),
-                    child: Column(
-                      children: [
-                        Container(
-                          alignment: Alignment.center,
-                          height: MediaQuery.of(context).size.height,
-                          child: Form(
-                            key: _keyFormLogin,
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: <Widget>[
-                                  logo,
-                                  Text(
-                                    "Plant Growth Checker",
-                                    style: kDefaultTextStyleBold(
-                                        color: Colors.black54, fontSize: 23),
-                                  ),
-                                  Hero(
-                                    tag: "sekolah",
-                                    child: DefaultTextStyle(
-                                      style:
-                                          kDefaultTextStyleBold(fontSize: 20),
-                                      child: Text(
-                                        "Aplikasi Monitoring\nBibit Tumbuhan",
-                                        textAlign: TextAlign.center,
-                                        style: kDefaultTextStyle(
-                                            fontSize: 23,
-                                            color: Colors.black54),
-                                      ),
+            body: Stack(
+              children: [
+                SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.asset(
+                      'assets/images/bg.png',
+                      fit: BoxFit.cover,
+                    )),
+                SingleChildScrollView(
+                  padding:
+                      const EdgeInsets.only(left: 20.0, right: 20.0, top: 100),
+                  child: Column(
+                    children: [
+                      Container(
+                        alignment: Alignment.center,
+                        height: MediaQuery.of(context).size.height,
+                        child: Form(
+                          key: _keyFormLogin,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                logo,
+                                Text(
+                                  "Plant Growth Checker",
+                                  style: kDefaultTextStyleBold(
+                                      color: Colors.black54, fontSize: 23),
+                                ),
+                                Hero(
+                                  tag: "sekolah",
+                                  child: DefaultTextStyle(
+                                    style: kDefaultTextStyleBold(fontSize: 20),
+                                    child: Text(
+                                      "Aplikasi Monitoring\nBibit Tumbuhan",
+                                      textAlign: TextAlign.center,
+                                      style: kDefaultTextStyle(
+                                          fontSize: 23, color: Colors.black54),
                                     ),
                                   ),
-                                  const SizedBox(height: 20),
-                                  emailField,
-                                  const SizedBox(height: 10.0),
-                                  passwordField,
-                                  const SizedBox(height: 20),
-                                  Obx(
-                                    () => kDefaultButtons(
-                                        backgroundColor: Colors.green,
-                                        onPressed: accountsController
-                                                    .isLoading.value ==
-                                                true
-                                            ? () {}
-                                            : () async {
-                                                Get.to(() => const MainPage());
-                                                // if (await accountsController
-                                                //         .loginGuru(
-                                                //             nip: emailController
-                                                //                 .text,
-                                                //             password: passController
-                                                //                 .text) ==
-                                                //     true) {
-                                                //   Future.delayed(
-                                                //       const Duration(seconds: 2),
-                                                //       () {
-                                                //     Get.to(() => const MainPage());
-                                                //   });
-                                                // } else {
-                                                //   Get.defaultDialog(
-                                                //       title: "Gagal",
-                                                //       content: const Text(
-                                                //           "Gagal menghubungkan ke server"),
-                                                //       cancel: TextButton(
-                                                //           onPressed: () {
-                                                //             Get.back();
-                                                //           },
-                                                //           child: const Text("OK")));
-                                                // }
-                                              },
-                                        title: accountsController
-                                                    .isLoading.value ==
-                                                true
-                                            ? "Loading"
-                                            : "Masuk"),
-                                  ),
-                                ],
-                              ),
+                                ),
+                                const SizedBox(height: 20),
+                                emailField,
+                                const SizedBox(height: 10.0),
+                                passwordField,
+                                const SizedBox(height: 20),
+                                Obx(
+                                  () => kDefaultButtons(
+                                      backgroundColor: Colors.green,
+                                      onPressed: accountsController
+                                                  .isLoading.value ==
+                                              true
+                                          ? () {}
+                                          : () async {
+                                              Get.to(() => const MainPage());
+                                              // if (await accountsController
+                                              //         .loginGuru(
+                                              //             nip: emailController
+                                              //                 .text,
+                                              //             password: passController
+                                              //                 .text) ==
+                                              //     true) {
+                                              //   Future.delayed(
+                                              //       const Duration(seconds: 2),
+                                              //       () {
+                                              //     Get.to(() => const MainPage());
+                                              //   });
+                                              // } else {
+                                              //   Get.defaultDialog(
+                                              //       title: "Gagal",
+                                              //       content: const Text(
+                                              //           "Gagal menghubungkan ke server"),
+                                              //       cancel: TextButton(
+                                              //           onPressed: () {
+                                              //             Get.back();
+                                              //           },
+                                              //           child: const Text("OK")));
+                                              // }
+                                            },
+                                      title:
+                                          accountsController.isLoading.value ==
+                                                  true
+                                              ? "Loading"
+                                              : "Masuk"),
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ),
