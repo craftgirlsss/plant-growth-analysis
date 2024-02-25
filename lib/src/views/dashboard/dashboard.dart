@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:plant_growth/src/components/textstyle.dart';
 import 'package:plant_growth/src/helpers/focus.dart';
+
+import 'detail_plant.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
@@ -134,69 +137,80 @@ class _DashboardState extends State<Dashboard> {
                       SliverList(
                         delegate: SliverChildBuilderDelegate(
                           (BuildContext context, int index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                  left: 20, right: 20, top: 35),
-                              child: Container(
-                                height: 120,
-                                decoration: BoxDecoration(
-                                    color: index % 2 == 0
-                                        ? Colors.green.shade100
-                                        : Colors.greenAccent,
-                                    gradient: LinearGradient(colors: [
-                                      Colors.white.withOpacity(0.4),
-                                      Colors.white.withOpacity(0.4),
-                                      Colors.white.withOpacity(0.6),
-                                      Colors.white.withOpacity(0.6)
-                                    ]),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          blurRadius: 30, color: Colors.black26)
-                                    ],
-                                    borderRadius: BorderRadius.circular(40)),
-                                alignment: Alignment.center,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Image.asset(
-                                      'assets/images/sample.png',
-                                    ),
-                                    const SizedBox(width: 10),
-                                    Expanded(
-                                      child: Container(
-                                        padding: const EdgeInsets.only(
-                                            top: 10, bottom: 0, right: 30),
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Flexible(
-                                              child: Text(
-                                                "Pohon Mahoni",
-                                                style: kDefaultTextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.black87,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ),
-                                            Flexible(
-                                              child: Text(
-                                                "Loeafbjksasdiuehbfjkasdinsdishhleahcunewrsaknfdciwebfkusflsjfskd",
-                                                maxLines: 3,
-                                                overflow: TextOverflow.clip,
-                                                style: kDefaultTextStyle(
-                                                  fontSize: 13,
-                                                  color: Colors.black87,
+                            return GestureDetector(
+                              onTap: () {
+                                Get.to(
+                                  () => PageDetail(
+                                    urlImage: 'assets/images/sample.png',
+                                    title: "Page $index",
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 20, right: 20, top: 35),
+                                child: Container(
+                                  height: 120,
+                                  decoration: BoxDecoration(
+                                      color: index % 2 == 0
+                                          ? Colors.green.shade100
+                                          : Colors.greenAccent,
+                                      gradient: LinearGradient(colors: [
+                                        Colors.white.withOpacity(0.4),
+                                        Colors.white.withOpacity(0.4),
+                                        Colors.white.withOpacity(0.6),
+                                        Colors.white.withOpacity(0.6)
+                                      ]),
+                                      boxShadow: [
+                                        BoxShadow(
+                                            blurRadius: 30,
+                                            color: Colors.black26)
+                                      ],
+                                      borderRadius: BorderRadius.circular(40)),
+                                  alignment: Alignment.center,
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Image.asset(
+                                        'assets/images/sample.png',
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Expanded(
+                                        child: Container(
+                                          padding: const EdgeInsets.only(
+                                              top: 10, bottom: 0, right: 30),
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Flexible(
+                                                child: Text(
+                                                  "Pohon Mahoni",
+                                                  style: kDefaultTextStyle(
+                                                      fontSize: 20,
+                                                      color: Colors.black87,
+                                                      fontWeight:
+                                                          FontWeight.bold),
                                                 ),
                                               ),
-                                            ),
-                                          ],
+                                              Flexible(
+                                                child: Text(
+                                                  "Loeafbjksasdiuehbfjkasdinsdishhleahcunewrsaknfdciwebfkusflsjfskd",
+                                                  maxLines: 3,
+                                                  overflow: TextOverflow.clip,
+                                                  style: kDefaultTextStyle(
+                                                    fontSize: 13,
+                                                    color: Colors.black87,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                    )
-                                  ],
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
                             );
