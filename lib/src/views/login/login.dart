@@ -17,7 +17,7 @@ class ViewLogin extends StatefulWidget {
 }
 
 class _ViewLoginState extends State<ViewLogin> {
-  TextEditingController emailController = TextEditingController();
+  TextEditingController usernameController = TextEditingController();
   TextEditingController passController = TextEditingController();
   AccountsController accountsController = Get.put(AccountsController());
   final _keyFormLogin = GlobalKey<FormState>();
@@ -25,7 +25,7 @@ class _ViewLoginState extends State<ViewLogin> {
 
   @override
   void dispose() {
-    emailController.dispose();
+    usernameController.dispose();
     passController.dispose();
     super.dispose();
   }
@@ -40,8 +40,8 @@ class _ViewLoginState extends State<ViewLogin> {
     );
 
     final emailField = TextFormField(
-      controller: emailController,
-      keyboardType: TextInputType.number,
+      controller: usernameController,
+      keyboardType: TextInputType.name,
       autofocus: false,
       style: kDefaultTextStyle(color: Colors.black87, fontSize: 15),
       decoration: InputDecoration(
@@ -151,32 +151,20 @@ class _ViewLoginState extends State<ViewLogin> {
                                       onPressed: accountsController
                                                   .isLoading.value ==
                                               true
-                                          ? () {}
+                                          ? null
                                           : () async {
-                                              Get.to(() => const MainPage());
-                                              // if (await accountsController
-                                              //         .loginGuru(
-                                              //             nip: emailController
-                                              //                 .text,
-                                              //             password: passController
-                                              //                 .text) ==
-                                              //     true) {
-                                              //   Future.delayed(
-                                              //       const Duration(seconds: 2),
-                                              //       () {
-                                              //     Get.to(() => const MainPage());
-                                              //   });
-                                              // } else {
-                                              //   Get.defaultDialog(
-                                              //       title: "Gagal",
-                                              //       content: const Text(
-                                              //           "Gagal menghubungkan ke server"),
-                                              //       cancel: TextButton(
-                                              //           onPressed: () {
-                                              //             Get.back();
-                                              //           },
-                                              //           child: const Text("OK")));
-                                              // }
+                                              if (await accountsController.login(
+                                                          username: usernameController
+                                                              .text,
+                                                          password: passController
+                                                              .text) ==
+                                                  true) {
+                                                Future.delayed(
+                                                    const Duration(seconds: 2),
+                                                    () {
+                                                  Get.offAll(() => const MainPage());
+                                                });
+                                              }
                                             },
                                       title:
                                           accountsController.isLoading.value ==

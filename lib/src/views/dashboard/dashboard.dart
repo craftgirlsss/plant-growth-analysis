@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:plant_growth/src/components/greetings.dart';
 import 'package:plant_growth/src/components/textstyle.dart';
+import 'package:plant_growth/src/controllers/accounts_controller.dart';
 import 'package:plant_growth/src/helpers/focus.dart';
 
 import 'detail_plant.dart';
@@ -15,6 +17,22 @@ class Dashboard extends StatefulWidget {
 
 class _DashboardState extends State<Dashboard> {
   TextEditingController searchController = TextEditingController();
+  AccountsController accountsController = Get.find();
+  String? ucapan;
+
+  @override
+  void initState() {
+    setState(() {
+      ucapan = greeting();
+    });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -55,33 +73,38 @@ class _DashboardState extends State<Dashboard> {
                         snap: false,
                         centerTitle: true,
                         automaticallyImplyLeading: false,
-                        leadingWidth: 200,
+                        leadingWidth: 300,
                         leading: Padding(
                           padding: const EdgeInsets.only(left: 20, top: 10),
-                          child: Text('Putra Budianto',
-                              style: TextStyle(
-                                fontSize: 25,
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
-                                shadows: [
-                                  Shadow(
-                                    color: Colors
-                                        .black54, // Choose the color of the shadow
-                                    blurRadius:
-                                        40, // Adjust the blur radius for the shadow effect
-                                    // Set the horizontal and vertical offset for the shadow
-                                  ),
-                                ],
-                              )),
+                          child: Obx(
+                            () => Text("Selamat $ucapan ${accountsController.accountModels.value?.result.name}",
+                            textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  shadows: [
+                                    Shadow(
+                                      color: Colors
+                                          .black54, // Choose the color of the shadow
+                                      blurRadius:
+                                          40, // Adjust the blur radius for the shadow effect
+                                      // Set the horizontal and vertical offset for the shadow
+                                    ),
+                                  ],
+                                )),
+                          ),
                         ),
                         actions: [
                           Padding(
                             padding: const EdgeInsets.only(right: 16, top: 5),
                             child: CircleAvatar(
                               backgroundColor: Colors.purple.shade400,
-                              child: Text(
-                                'P',
-                                style: kDefaultTextStyle(fontSize: 16),
+                              child: Obx(
+                                () => Text(
+                                  accountsController.accountModels.value?.result.name != '' ? accountsController.accountModels.value!.result.name!.toUpperCase().substring(0, 1) : '',
+                                  style: kDefaultTextStyle(fontSize: 16),
+                                ),
                               ),
                             ),
                           )
@@ -123,9 +146,6 @@ class _DashboardState extends State<Dashboard> {
                                         color: Colors.black87, fontSize: 15),
                                     contentPadding: const EdgeInsets.fromLTRB(
                                         20.0, 10.0, 20.0, 10.0),
-                                    // border: OutlineInputBorder(
-                                    //   borderSide: BorderSide.none,
-                                    //   borderRadius: BorderRadius.circular(32.0),
                                   ),
                                 ),
                               ),

@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:plant_growth/src/controllers/splash_controller.dart';
 
-class SplashScreen extends StatelessWidget {
+class SplashScreen extends StatefulWidget {
   SplashScreen({super.key});
 
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
   final splashController = Get.put(SplashController());
+  
 
   @override
   Widget build(BuildContext context) {
