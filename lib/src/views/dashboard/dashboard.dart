@@ -5,6 +5,7 @@ import 'package:plant_growth/src/components/greetings.dart';
 import 'package:plant_growth/src/components/textstyle.dart';
 import 'package:plant_growth/src/controllers/accounts_controller.dart';
 import 'package:plant_growth/src/helpers/focus.dart';
+import 'package:plant_growth/src/views/setting/myprofile.dart';
 
 import 'detail_plant.dart';
 
@@ -77,7 +78,7 @@ class _DashboardState extends State<Dashboard> {
                         leading: Padding(
                           padding: const EdgeInsets.only(left: 20, top: 10),
                           child: Obx(
-                            () => Text("Selamat $ucapan ${accountsController.accountModels.value?.result.name}",
+                            () => Text("Selamat $ucapan ${accountsController.accountModels.value?.result.name ?? ''}",
                             textAlign: TextAlign.start,
                                 style: TextStyle(
                                   fontSize: 20,
@@ -98,12 +99,15 @@ class _DashboardState extends State<Dashboard> {
                         actions: [
                           Padding(
                             padding: const EdgeInsets.only(right: 16, top: 5),
-                            child: CircleAvatar(
-                              backgroundColor: Colors.purple.shade400,
-                              child: Obx(
-                                () => Text(
-                                  accountsController.accountModels.value?.result.name != '' ? accountsController.accountModels.value!.result.name!.toUpperCase().substring(0, 1) : '',
-                                  style: kDefaultTextStyle(fontSize: 16),
+                            child: GestureDetector(
+                              onTap: () => Get.to(() => const MyProfileDetail()),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.purple.shade400,
+                                child: Obx(
+                                  () => Text(
+                                    accountsController.accountModels.value?.result.name != null ? accountsController.accountModels.value!.result.name!.toUpperCase().substring(0, 1) : 'U',
+                                    style: kDefaultTextStyle(fontSize: 16),
+                                  ),
                                 ),
                               ),
                             ),
