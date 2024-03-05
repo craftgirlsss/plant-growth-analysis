@@ -2,11 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:plant_growth/src/components/greetings.dart';
+import 'package:plant_growth/src/components/loadings.dart';
 import 'package:plant_growth/src/components/textstyle.dart';
 import 'package:plant_growth/src/controllers/accounts_controller.dart';
+import 'package:plant_growth/src/controllers/tumbuhan_controller.dart';
 import 'package:plant_growth/src/helpers/focus.dart';
 import 'package:plant_growth/src/views/setting/myprofile.dart';
 
+import 'adding_items.dart';
 import 'detail_plant.dart';
 
 class Dashboard extends StatefulWidget {
@@ -19,6 +22,7 @@ class Dashboard extends StatefulWidget {
 class _DashboardState extends State<Dashboard> {
   TextEditingController searchController = TextEditingController();
   AccountsController accountsController = Get.find();
+  TumbuhanController tumbuhanController = Get.put(TumbuhanController());
   String? ucapan;
 
   @override
@@ -158,89 +162,122 @@ class _DashboardState extends State<Dashboard> {
                         ),
                       ),
                       // Other Sliver Widgets
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
-                            return GestureDetector(
-                              onTap: () {
-                                Get.to(
-                                  () => PageDetail(
-                                    urlImage: 'assets/images/sample.png',
-                                    title: "Page $index",
-                                  ),
-                                );
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                    left: 20, right: 20, top: 35),
-                                child: Container(
-                                  height: 120,
-                                  decoration: BoxDecoration(
-                                      color: index % 2 == 0
-                                          ? Colors.green.shade100
-                                          : Colors.greenAccent,
-                                      gradient: LinearGradient(colors: [
-                                        Colors.white.withOpacity(0.4),
-                                        Colors.white.withOpacity(0.4),
-                                        Colors.white.withOpacity(0.6),
-                                        Colors.white.withOpacity(0.6)
-                                      ]),
-                                      boxShadow: [
-                                        BoxShadow(
-                                            blurRadius: 30,
-                                            color: Colors.black26)
-                                      ],
-                                      borderRadius: BorderRadius.circular(40)),
-                                  alignment: Alignment.center,
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      Image.asset(
-                                        'assets/images/sample.png',
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Expanded(
-                                        child: Container(
-                                          padding: const EdgeInsets.only(
-                                              top: 10, bottom: 0, right: 30),
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Flexible(
-                                                child: Text(
-                                                  "Pohon Mahoni",
-                                                  style: kDefaultTextStyle(
-                                                      fontSize: 20,
-                                                      color: Colors.black87,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ),
-                                              Flexible(
-                                                child: Text(
-                                                  "Loeafbjksasdiuehbfjkasdinsdishhleahcunewrsaknfdciwebfkusflsjfskd",
-                                                  maxLines: 3,
-                                                  overflow: TextOverflow.clip,
-                                                  style: kDefaultTextStyle(
-                                                    fontSize: 13,
-                                                    color: Colors.black87,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
+                      Obx(
+                        () => tumbuhanController.tumbuhanModels.value?.tumbuhan.length == 0 ?
+                        SliverList(delegate: SliverChildBuilderDelegate((contxt, index) => Container(
+                          height: MediaQuery.of(context).size.height / 1.4,
+                          child: Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Tidak ada data", style: kDefaultTextStyle(fontSize: 16, color: Colors.black54),),
+                                IconButton.filledTonal(
+                                  onPressed: (){
+                                    Get.to(() => AddingItemPage());
+                                  }, 
+                                  icon: Icon(Icons.add),
+                                )
+                              ],
+                            ),
+                          ),
+                        ), 
+                          childCount: 1)) :
+                         SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (BuildContext context, int index) {
+                              print(tumbuhanController.tumbuhanModels.value?.tumbuhan.length);
+                              return GestureDetector(
+                                    onTap: () {
+                                      Get.to(
+                                        () => PageDetail(
+                                          urlImage: 'assets/images/sample.png',
+                                          title: "Page $index",
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
-                          // 40 list items
-                          childCount: 40,
+                                      );
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 20, right: 20, top: 20),
+                                      child: Container(
+                                        height: 110,
+                                        decoration: BoxDecoration(
+                                            color: index % 2 == 0
+                                                ? Colors.green.shade100
+                                                : Colors.greenAccent,
+                                            gradient: LinearGradient(colors: [
+                                              Colors.white.withOpacity(0.4),
+                                              Colors.white.withOpacity(0.4),
+                                              Colors.white.withOpacity(0.6),
+                                              Colors.white.withOpacity(0.6)
+                                            ]),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  blurRadius: 30,
+                                                  color: Colors.black26)
+                                            ],
+                                            borderRadius: BorderRadius.circular(40)),
+                                        alignment: Alignment.center,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            tumbuhanController.tumbuhanModels.value?.tumbuhan[index].imgUrl != null ? Container(
+                                              width: 100,
+                                              margin: const EdgeInsets.only(left: 10),
+                                              child: ClipRRect(
+                                                borderRadius: BorderRadius.circular(10),
+                                                child: Image.network(tumbuhanController.tumbuhanModels.value!.tumbuhan[index].imgUrl!))) : Image.asset(
+                                              'assets/images/sample.png',
+                                            ),
+                                            // const SizedBox(width: 10),
+                                            Expanded(
+                                              child: Container(
+                                                alignment: Alignment.center,
+                                                padding: const EdgeInsets.only(
+                                                    top: 0, bottom: 0, right: 20),
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  mainAxisAlignment: MainAxisAlignment.center,
+                                                  children: [
+                                                    Flexible(
+                                                      child: Obx(
+                                                        () => Text(
+                                                          tumbuhanController.tumbuhanModels.value?.tumbuhan[index].nama ?? 'Unknown',
+                                                          style: kDefaultTextStyle(
+                                                              fontSize: 20,
+                                                              color: Colors.black87,
+                                                              fontWeight:
+                                                                  FontWeight.bold),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Flexible(
+                                                      child: Obx(
+                                                        () => Text(
+                                                          tumbuhanController.tumbuhanModels.value?.tumbuhan[index].deskripsi ?? 'Tidak ada deskripso',
+                                                          maxLines: 3,
+                                                          overflow: TextOverflow.clip,
+                                                          style: kDefaultTextStyle(
+                                                            fontSize: 13,
+                                                            color: Colors.black87,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                              );
+                            },
+                            // 40 list items
+                            childCount: tumbuhanController.tumbuhanModels.value?.tumbuhan.length,
+                          ),
                         ),
                       ),
                     ],
@@ -250,6 +287,9 @@ class _DashboardState extends State<Dashboard> {
             ),
           ),
         ),
+        Obx(() => accountsController.isLoading.value == true
+            ? floatingLoading()
+            : const SizedBox()),
       ],
     );
 
