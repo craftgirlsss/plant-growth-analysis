@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -23,8 +23,6 @@ class _AddingItemPageState extends State<AddingItemPage> {
   TextEditingController heightController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   AccountsController accountsController = Get.find();
-
-  File? _selectedImage;
 
   @override
   void dispose() {
@@ -55,6 +53,9 @@ class _AddingItemPageState extends State<AddingItemPage> {
           child: GestureDetector(
           onTap: () => focusManager(),
           child: Scaffold(
+            appBar: AppBar(
+              automaticallyImplyLeading: true,
+            ),
             body: Stack(
               children: [
                 SizedBox(
@@ -64,83 +65,105 @@ class _AddingItemPageState extends State<AddingItemPage> {
                         fit: BoxFit.cover,
                       ),
                     ),
-                  SingleChildScrollView(
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                      children: [
-                        const SizedBox(height: 50),
-                        _selectedImage != null ? Container(
+                  SafeArea(
+                    child: SingleChildScrollView(
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                        children: [
+                          images != null
+                        ? Container(
+                            width: MediaQuery.of(context).size.width,
+                            padding: const EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child:
+                                Container(
+                                  color: Colors.transparent,
+                                  width: 100,
+                                  child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(20),
+                                      child: Image.file(images!)),
+                                ),
+                              
+                          )
+                        : 
+                        Container(
+                          height: 100,
                           width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height / 4,
-                          child: InkWell(
-                            borderRadius: BorderRadius.circular(10),
-                            child: Image.file(_selectedImage!,fit: BoxFit.cover,)),
-                        ) 
-                          : Container(
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height / 5,
-                          padding: const EdgeInsets.all(50),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: Colors.black.withOpacity(0.2)
+                            border: Border.all(color: Colors.black54)
                           ),
                           child: GestureDetector(
-                            onTap: ()async{
-                              _pickImageGallery();
+                            onTap: () {
+                              showActionSheet(context);
                             },
-                            child: Container(
-                              width: 30,
-                              height: 30,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Colors.white.withOpacity(0.7)
-                              ),
-                              child: Icon(Icons.add),
+                            child: Icon(Icons.add_a_photo_rounded, color: Colors.black54))
+                            
+                        ),
+                        const SizedBox(height: 20),
+                          images != null ? SizedBox(
+                            width: 120,
+                            child: kDefaultButtons(
+                              onPressed: () {
+                                showActionSheet(context);
+                              },
+                              backgroundColor: Colors.red.shade400,
+                              title: "Ubah",
+                              textColor: Colors.white
                             ),
+                          ) : Container(),
+                          const SizedBox(height: 20),
+                          CustomTextFieldNameBlack(
+                            readOnly: false,
+                            iconData: Icons.energy_savings_leaf_rounded,
+                            controller: nameController,
+                            hinyText: "Nama Tumbuhan",
                           ),
-                        ),
-                        const SizedBox(height: 50),
-                        CustomTextFieldNameBlack(
-                          readOnly: false,
-                          iconData: Icons.energy_savings_leaf_rounded,
-                          controller: nameController,
-                          hinyText: "Nama Tumbuhan",
-                        ),
-                        const SizedBox(height: 10),
-                        CustomTextFieldNameBlack(
-                          readOnly: false,
-                          iconData: Icons.snowing,
-                          controller: nameController,
-                          hinyText: "Jenis Kelamin Tumbuhan",
-                        ),
-                        const SizedBox(height: 10),
-                        CustomTextFieldNameBlack(
-                          readOnly: false,
-                          iconData: Icons.replay_circle_filled_rounded,
-                          controller: nameController,
-                          hinyText: "Diameter Batang",
-                        ),
-                        const SizedBox(height: 10),
-                        CustomTextFieldNameBlack(
-                          readOnly: false,
-                          iconData: Icons.height,
-                          controller: nameController,
-                          hinyText: "Tinggi Tumbuhan",
-                        ),
-                        const SizedBox(height: 10),
-                        CustomTextFieldNameBlackForDescription(
-                          readOnly: false,
-                          iconData: Icons.notes_rounded,
-                          controller: nameController,
-                          hinyText: "Deskripsi Tumbuhan",
-                        ),
-                        kDefaultButtons(
-                          backgroundColor: Colors.green,
-                          onPressed: (){},
-                          textColor: Colors.white,
-                          title: "Tambah Tumbuhan"
-                        )
-                      ],
+                          const SizedBox(height: 10),
+                          CustomTextFieldNameBlack(
+                            readOnly: false,
+                            iconData: Icons.snowing,
+                            controller: nameController,
+                            hinyText: "Jenis Kelamin Tumbuhan",
+                          ),
+                          const SizedBox(height: 10),
+                          CustomTextFieldNameBlack(
+                            readOnly: false,
+                            iconData: Icons.replay_circle_filled_rounded,
+                            controller: nameController,
+                            hinyText: "Diameter Batang",
+                          ),
+                          const SizedBox(height: 10),
+                          CustomTextFieldNameBlack(
+                            readOnly: false,
+                            iconData: Icons.height,
+                            controller: nameController,
+                            hinyText: "Tinggi Tumbuhan",
+                          ),
+                          const SizedBox(height: 10),
+                          CustomTextFieldNameBlackForDescription(
+                            readOnly: false,
+                            iconData: Icons.notes_rounded,
+                            controller: nameController,
+                            hinyText: "Deskripsi Tumbuhan",
+                          ),
+                          Obx(
+                            () => kDefaultButtons(
+                              backgroundColor: Colors.green,
+                              onPressed: accountsController.isLoading.value ? null : (){
+                                if(nameController.text.isNotEmpty && genderController.text.isNotEmpty && diameterController.text.isNotEmpty && heightController.text.isNotEmpty && descriptionController.text.isNotEmpty && images != null){
+
+                                }
+                              },
+                              textColor: Colors.white,
+                              title: accountsController.isLoading.value ? "Mengupload..." : "Tambah Tumbuhan"
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   )
                 ],
@@ -155,21 +178,63 @@ class _AddingItemPageState extends State<AddingItemPage> {
     );
   }
 
-  Future _pickImageGallery() async {
-    final returnedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if(returnedImage == null){
+  String? pathImage;
+  File? images;
+  getFromCamera() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? imagePicked = await picker.pickImage(
+        source: ImageSource.camera,
+        imageQuality: 30,
+        preferredCameraDevice: CameraDevice.rear
+        );
       setState(() {
-        _selectedImage = File(returnedImage!.path);
+        images = File(imagePicked!.path);
+        pathImage = imagePicked.path;
       });
-    }
   }
 
-  Future _pickImageCamera() async {
-    final returnedImage = await ImagePicker().pickImage(source: ImageSource.camera);
-    if(returnedImage == null){
+  getFromGalleries() async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? imagePicked = await picker.pickImage(
+        source: ImageSource.gallery,
+        imageQuality: 30);
       setState(() {
-        _selectedImage = File(returnedImage!.path);
+        images = File(imagePicked!.path);
+        pathImage = imagePicked.path;
       });
-    }
+  }
+
+  void showActionSheet(BuildContext context) {
+    showCupertinoModalPopup<void>(
+      context: context,
+      builder: (BuildContext context) => CupertinoActionSheet(
+        title: Text("Pilih Opsi"),
+        message: Text("Pilih opsi pengambilan gambar"),
+        actions: <CupertinoActionSheetAction>[
+          CupertinoActionSheetAction(
+            onPressed: () async {
+              await getFromGalleries();
+              Navigator.pop(context);
+            },
+            child: const Text('Gallery', style: TextStyle(color: CupertinoColors.activeBlue),),
+          ),
+          CupertinoActionSheetAction(
+            onPressed: () async {
+             await getFromCamera();
+              Navigator.pop(context);
+            },
+            child: const Text('Camera', style: TextStyle(color: CupertinoColors.activeBlue)),
+          ),
+          
+        ],
+        cancelButton:CupertinoActionSheetAction(
+            isDestructiveAction: true,
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('Cancel', style: TextStyle(fontWeight: FontWeight.bold),),
+          ) ,
+      ),
+    );
   }
 }

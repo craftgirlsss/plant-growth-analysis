@@ -49,4 +49,40 @@ class TumbuhanController extends GetxController{
       return false;
     }
   }
+
+  Future<bool> fetchApiClockInWithImage({
+    String? nama,
+    String? deskripsi,
+    String? jenis_kelamin_tumbuhan,
+    String? diameter,
+    String? tinggi,
+    String? urlImage
+  }) async {
+    var headers = {
+      'Cookie': 'ci_session=f1c0ece335067e449b3c359bd0a4e904d2d7f1a5'
+    };
+    var request = http.MultipartRequest(
+        'POST', Uri.parse('https://bibit.elasticofsk8.com//api/inputDataTumbuhn'));
+    request.fields.addAll({
+      'nama': 'Tumbuhan Arfi',
+      'deskripsi': 'lorem ipsur sir dolor amet',
+      'jenis_kelamin_tumbuhan': 'l',
+      'user_id': '1',
+      'diameter': '2',
+      'tinggi': '2'
+    });
+
+    request.files.add(await http.MultipartFile.fromPath('img_file', urlImage!));
+
+    request.headers.addAll(headers);
+
+    http.StreamedResponse response = await request.send();
+
+    if (response.statusCode == 200) {
+      print(await response.stream.bytesToString());
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
