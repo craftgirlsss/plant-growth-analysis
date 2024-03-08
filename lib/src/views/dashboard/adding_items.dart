@@ -92,19 +92,24 @@ class _AddingItemPageState extends State<AddingItemPage> {
                               
                           )
                         : 
-                        Container(
-                          height: 100,
-                          width: MediaQuery.of(context).size.width,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            border: Border.all(color: Colors.black54)
+                        GestureDetector(
+                          onTap: () {
+                                showActionSheet(context);
+                              },
+                          child: Container(
+                            height: 100,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              border: Border.all(color: Colors.black54)
+                            ),
+                            child: GestureDetector(
+                              onTap: () {
+                                showActionSheet(context);
+                              },
+                              child: Icon(Icons.add_a_photo_rounded, color: Colors.black54))
+                              
                           ),
-                          child: GestureDetector(
-                            onTap: () {
-                              showActionSheet(context);
-                            },
-                            child: Icon(Icons.add_a_photo_rounded, color: Colors.black54))
-                            
                         ),
                         const SizedBox(height: 20),
                           images != null ? SizedBox(
@@ -137,7 +142,7 @@ class _AddingItemPageState extends State<AddingItemPage> {
                             readOnly: false,
                             iconData: Icons.replay_circle_filled_rounded,
                             controller: diameterController,
-                            hinyText: "Diameter Batang (meter)",
+                            hinyText: "Diameter Batang (cm)",
                           ),
                           const SizedBox(height: 10),
                           CustomTextFieldNameBlack(
@@ -202,7 +207,7 @@ class _AddingItemPageState extends State<AddingItemPage> {
     final ImagePicker picker = ImagePicker();
     final XFile? imagePicked = await picker.pickImage(
         source: ImageSource.camera,
-        imageQuality: 30,
+        imageQuality: 10,
         preferredCameraDevice: CameraDevice.rear
         );
       setState(() {
@@ -215,7 +220,7 @@ class _AddingItemPageState extends State<AddingItemPage> {
     final ImagePicker picker = ImagePicker();
     final XFile? imagePicked = await picker.pickImage(
         source: ImageSource.gallery,
-        imageQuality: 30);
+        imageQuality: 10);
       setState(() {
         images = File(imagePicked!.path);
         pathImage = imagePicked.path;

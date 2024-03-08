@@ -148,7 +148,7 @@ class _PageDetailState extends State<PageDetail> {
                   itemBuilder: (context, index) => ListTile(
                     leading: InkWell(
                       borderRadius: BorderRadius.circular(10),
-                      child: Image.network(index == 0 ? widget.urlImage! : tumbuhanController.detailTumbuhan.value!.perkembangan[index].imgUrl!, fit: BoxFit.cover, width: 100,),
+                      child: Image.network(tumbuhanController.detailTumbuhan.value!.perkembangan[index].imgUrl!, fit: BoxFit.cover, width: 100,),
                       ),
                     title: Text(tumbuhanController.detailTumbuhan.value!.perkembangan[index].deskripsi ?? 'Tidak ada deskripsi', style: kDefaultTextStyle(fontSize: 14, color: Colors.black87), overflow: TextOverflow.ellipsis, maxLines: 2),
                     subtitle: Text("Tanggal : ${tumbuhanController.detailTumbuhan.value!.perkembangan[index].dateTime}"),

@@ -29,6 +29,9 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
+    lint {
+          baseline = file("lint-baseline.xml")
+      }
     namespace "com.example.plant_growth"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion

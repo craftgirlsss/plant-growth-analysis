@@ -157,6 +157,13 @@ class _DashboardState extends State<Dashboard> {
                               ),
                             ),
                           ),
+                          actions: [
+                            Obx(
+                              () => tumbuhanController.isLoading.value == true ? const Icon(CupertinoIcons.refresh, color: Colors.white) : IconButton(onPressed: () {
+                                tumbuhanController.getListTumbuhan();
+                              }, icon: Icon(CupertinoIcons.refresh, color: Colors.white)),
+                            )
+                          ],
                         ),
                       ),
                       // Other Sliver Widgets
@@ -260,7 +267,9 @@ class _DashboardState extends State<Dashboard> {
                                               ),
                                             ),
                                             Obx(
-                                              () => tumbuhanController.isLoading.value == true ? Container() : IconButton(onPressed: ()async{
+                                              () => tumbuhanController.isLoading.value == true ? Container() : 
+                                              IconButton(
+                                                  onPressed: ()async{
                                                 if(await tumbuhanController.hapusTumbuhan(idTumbuhan: tumbuhanController.tumbuhanModels.value?.tumbuhan[index].id) == true){
                                                   await tumbuhanController.getListTumbuhan();
                                                 }
@@ -284,7 +293,7 @@ class _DashboardState extends State<Dashboard> {
             ),
           ),
         ),
-        Obx(() => accountsController.isLoading.value == true
+        Obx(() => accountsController.isLoading.value == true || tumbuhanController.isLoading.value == true
             ? floatingLoading()
             : const SizedBox()),
       ],
