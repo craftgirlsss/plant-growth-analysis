@@ -10,16 +10,15 @@ import 'package:plant_growth/src/controllers/accounts_controller.dart';
 import 'package:plant_growth/src/controllers/tumbuhan_controller.dart';
 import 'package:plant_growth/src/helpers/focus.dart';
 
-class AddingItemPage extends StatefulWidget {
-  const AddingItemPage({super.key});
+class AddingPerkembangan extends StatefulWidget {
+  final String? id;
+  const AddingPerkembangan({super.key, this.id});
 
   @override
-  State<AddingItemPage> createState() => _AddingItemPageState();
+  State<AddingPerkembangan> createState() => _AddingPerkembanganState();
 }
 
-class _AddingItemPageState extends State<AddingItemPage> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController genderController = TextEditingController();
+class _AddingPerkembanganState extends State<AddingPerkembangan> {
   TextEditingController diameterController = TextEditingController();
   TextEditingController heightController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
@@ -28,8 +27,6 @@ class _AddingItemPageState extends State<AddingItemPage> {
 
   @override
   void dispose() {
-    nameController.dispose();
-    genderController.dispose();
     diameterController.dispose();
     heightController.dispose();
     descriptionController.dispose();
@@ -57,7 +54,7 @@ class _AddingItemPageState extends State<AddingItemPage> {
           child: Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: true,
-              title: Text("Tambah Data Tumbuhan"),
+              title: Text("Tambah Perkembangan"),
             ),
             body: Stack(
               children: [
@@ -121,20 +118,6 @@ class _AddingItemPageState extends State<AddingItemPage> {
                           const SizedBox(height: 20),
                           CustomTextFieldNameBlack(
                             readOnly: false,
-                            iconData: Icons.energy_savings_leaf_rounded,
-                            controller: nameController,
-                            hinyText: "Nama Tumbuhan",
-                          ),
-                          const SizedBox(height: 10),
-                          CustomTextFieldNameBlack(
-                            readOnly: false,
-                            iconData: Icons.snowing,
-                            controller: genderController,
-                            hinyText: "Jenis Kelamin Tumbuhan",
-                          ),
-                          const SizedBox(height: 10),
-                          CustomTextFieldNameBlack(
-                            readOnly: false,
                             iconData: Icons.replay_circle_filled_rounded,
                             controller: diameterController,
                             hinyText: "Diameter Batang (meter)",
@@ -157,16 +140,17 @@ class _AddingItemPageState extends State<AddingItemPage> {
                             () => kDefaultButtons(
                               backgroundColor: Colors.green,
                               onPressed: tumbuhanController.isLoading.value ? null : () async {
-                                if(nameController.text.isNotEmpty && genderController.text.isNotEmpty && diameterController.text.isNotEmpty && heightController.text.isNotEmpty && descriptionController.text.isNotEmpty && images != null){
-                                  if(await tumbuhanController.tambahDataTumbuhan(
+                                if(diameterController.text.isNotEmpty && heightController.text.isNotEmpty && descriptionController.text.isNotEmpty && images != null){
+                                  if(await tumbuhanController.tambahDataPerkembangan(
+                                    idTumbuhan: widget.id,
                                     deskripsi: descriptionController.text,
                                     diameter: diameterController.text,
-                                    jenis_kelamin_tumbuhan: genderController.text,
-                                    nama: nameController.text,
                                     tinggi: heightController.text,
                                     urlImage: pathImage
                                   ) == true){
-                                    tumbuhanController.getListTumbuhan();
+                                    tumbuhanController.getDataTumbuhan(
+                                      id_tumbuhan: widget.id
+                                    );
                                     Get.snackbar("Berhasil", "Berhasil menambah data tanaman");
                                     Future.delayed(const Duration(seconds: 2), (){
                                       Navigator.pop(context);

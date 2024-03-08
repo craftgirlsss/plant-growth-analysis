@@ -8,8 +8,6 @@ import 'package:plant_growth/src/controllers/accounts_controller.dart';
 import 'package:plant_growth/src/controllers/tumbuhan_controller.dart';
 import 'package:plant_growth/src/helpers/focus.dart';
 import 'package:plant_growth/src/views/setting/myprofile.dart';
-
-import 'adding_items.dart';
 import 'detail_plant.dart';
 
 class Dashboard extends StatefulWidget {
@@ -167,18 +165,7 @@ class _DashboardState extends State<Dashboard> {
                         SliverList(delegate: SliverChildBuilderDelegate((contxt, index) => Container(
                           height: MediaQuery.of(context).size.height / 1.4,
                           child: Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("Tidak ada data", style: kDefaultTextStyle(fontSize: 16, color: Colors.black54),),
-                                IconButton.filledTonal(
-                                  onPressed: (){
-                                    Get.to(() => AddingItemPage());
-                                  }, 
-                                  icon: Icon(Icons.add),
-                                )
-                              ],
-                            ),
+                            child: Text("Tidak ada data", style: kDefaultTextStyle(fontSize: 16, color: Colors.black54),)
                           ),
                         ), 
                           childCount: 1)) :
@@ -188,10 +175,13 @@ class _DashboardState extends State<Dashboard> {
                               print(tumbuhanController.tumbuhanModels.value?.tumbuhan.length);
                               return GestureDetector(
                                     onTap: () {
+                                      print(tumbuhanController.tumbuhanModels.value?.tumbuhan[index].imgUrl);
                                       Get.to(
                                         () => PageDetail(
-                                          urlImage: 'assets/images/sample.png',
-                                          title: "Page $index",
+                                          deskripsi: tumbuhanController.tumbuhanModels.value?.tumbuhan[index].deskripsi,
+                                          id: tumbuhanController.tumbuhanModels.value?.tumbuhan[index].id,
+                                          urlImage: tumbuhanController.tumbuhanModels.value?.tumbuhan[index].imgUrl,
+                                          title: tumbuhanController.tumbuhanModels.value?.tumbuhan[index].nama,
                                         ),
                                       );
                                     },
@@ -229,7 +219,7 @@ class _DashboardState extends State<Dashboard> {
                                                 child: Image.network(tumbuhanController.tumbuhanModels.value!.tumbuhan[index].imgUrl!))) : Image.asset(
                                               'assets/images/sample.png',
                                             ),
-                                            // const SizedBox(width: 10),
+                                            const SizedBox(width: 10),
                                             Expanded(
                                               child: Container(
                                                 alignment: Alignment.center,
@@ -268,7 +258,14 @@ class _DashboardState extends State<Dashboard> {
                                                   ],
                                                 ),
                                               ),
-                                            )
+                                            ),
+                                            Obx(
+                                              () => tumbuhanController.isLoading.value == true ? Container() : IconButton(onPressed: ()async{
+                                                if(await tumbuhanController.hapusTumbuhan(idTumbuhan: tumbuhanController.tumbuhanModels.value?.tumbuhan[index].id) == true){
+                                                  await tumbuhanController.getListTumbuhan();
+                                                }
+                                              }, icon: Icon(CupertinoIcons.trash)),
+                                            ),
                                           ],
                                         ),
                                       ),

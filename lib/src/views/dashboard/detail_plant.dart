@@ -1,22 +1,30 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:plant_growth/src/components/loadings.dart';
 import 'package:plant_growth/src/components/textstyle.dart';
+import 'package:plant_growth/src/controllers/tumbuhan_controller.dart';
 import 'package:plant_growth/src/helpers/focus.dart';
+
+import 'adding_perkembangan.dart';
 
 class PageDetail extends StatefulWidget {
   final String? title;
+  final String? id;
   final String? urlImage;
-  const PageDetail({super.key, this.title, this.urlImage});
+  final String? deskripsi;
+  const PageDetail({super.key, this.title, this.urlImage, this.id, this.deskripsi});
 
   @override
   State<PageDetail> createState() => _PageDetailState();
 }
 
 class _PageDetailState extends State<PageDetail> {
+  TumbuhanController tumbuhanController = Get.find();
   TextEditingController? diameter;
   TextEditingController? hari;
   TextEditingController? tinggi;
+
   void popUpAddData() {
     Get.defaultDialog(
         content: Column(
@@ -76,6 +84,14 @@ class _PageDetailState extends State<PageDetail> {
   }
 
   @override
+  void initState() {
+    tumbuhanController.getDataTumbuhan(
+      id_tumbuhan: widget.id
+    );
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
@@ -101,61 +117,68 @@ class _PageDetailState extends State<PageDetail> {
                 automaticallyImplyLeading: true,
                 centerTitle: true,
                 elevation: 0,
-                title: Text(widget.title ?? 'Bunga'),
-              ),
-              body: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Stack(
+                actions: [
+                  IconButton.filled(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStatePropertyAll(Colors.green.shade300)
+                      ),
+                      onPressed: (){
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => AddingPerkembangan(
+                          id: widget.id,
+                        )));
+                      }, 
+                      icon: Row(
                       children: [
-                        Container(
-                          alignment: Alignment.center,
-                          width: MediaQuery.of(context).size.width,
-                          height: MediaQuery.of(context).size.height / 3,
-                          color: Colors.transparent,
-                          child: Stack(
-                            children: [
-                              Center(
-                                  child: Image.asset(
-                                widget.urlImage!,
-                                width: 280,
-                              ))
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 25, right: 25),
-                      child: Text(
-                        """Bonsai (盆栽) adalah tanaman atau pohon yang dikerdilkan di dalam pot dangkal dengan tujuan membuat miniatur dari bentuk asli pohon besar yang sudah tua di alam bebas. Penanaman (sai, 栽) dilakukan di pot dangkal yang disebut bon (盆). Istilah bonsai juga dipakai untuk seni tradisional Jepang dalam pemeliharaan tanaman atau pohon dalam pot dangkal, dan apresiasi keindahan bentuk dahan, daun, batang, dan akar pohon, serta pot dangkal yang menjadi wadah, atau keseluruhan bentuk tanaman atau pohon. Bonsai adalah pelafalan bahasa Jepang untuk penzai (盆栽).
-                    
-                    Seni ini mencakup berbagai teknik pemotongan dan pemangkasan tanaman, pengawatan (pembentukan cabang dan dahan pohon dengan melilitkan kawat atau membengkokkannya dengan ikatan kawat), serta membuat akar menyebar di atas batu. Pembuatan bonsai memakan waktu yang lama dan melibatkan berbagai macam pekerjaan, antara lain pemberian pupuk, pemangkasan, pembentukan tanaman, penyiraman, dan penggantian pot dan tanah. Tanaman atau pohon dikerdilkan dengan cara memotong akar dan rantingnya. Pohon dibentuk dengan bantuan kawat pada ranting dan tunasnya. Kawat harus sudah diambil sebelum sempat menggores kulit ranting pohon tersebut. Tanaman adalah makhluk hidup, dan tidak ada bonsai yang dapat dikatakan selesai atau sudah jadi. Perubahan yang terjadi terus menerus pada tanaman sesuai musim atau keadaan alam merupakan salah satu daya tarik bonsai. 
-                    """,
-                        textAlign: TextAlign.justify,
-                      ),
-                    ),
-                    SizedBox(
-                      width: MediaQuery.of(context).size.width / 2,
-                      child: ElevatedButton.icon(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green),
-                        onPressed: () {
-                          popUpAddData();
-                        },
-                        icon: Icon(Icons.add, color: Colors.white),
-                        label: Text(
-                          "Tambah Data",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                        Icon(Icons.add, color: Colors.white,),
+                        Text("Tambah", style: TextStyle(color: Colors.white),)],
+                    )),
+                  
+                  Obx(
+                    () => tumbuhanController.isLoading.value == true ? Container() : IconButton(onPressed: () async {
+                      await tumbuhanController.getDataTumbuhan(
+                        id_tumbuhan: widget.id
+                      );
+                    }, icon: Icon(CupertinoIcons.refresh)),
+                  )
+                ],
+                title: Text(widget.title!),
               ),
+              body: Obx(
+                () => ListView.separated(
+                  itemBuilder: (context, index) => ListTile(
+                    leading: InkWell(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Image.network(index == 0 ? widget.urlImage! : tumbuhanController.detailTumbuhan.value!.perkembangan[index].imgUrl!, fit: BoxFit.cover, width: 100,),
+                      ),
+                    title: Text(tumbuhanController.detailTumbuhan.value!.perkembangan[index].deskripsi ?? 'Tidak ada deskripsi', style: kDefaultTextStyle(fontSize: 14, color: Colors.black87), overflow: TextOverflow.ellipsis, maxLines: 2),
+                    subtitle: Text("Tanggal : ${tumbuhanController.detailTumbuhan.value!.perkembangan[index].dateTime}"),
+                    trailing: IconButton(
+                      onPressed: () async {
+                        if(index == 0){
+                          Get.snackbar("Gagal", "Tidak dapat menghapus data perkembangan pertama", backgroundColor: Colors.red, colorText: Colors.white);
+                        }else{
+                          if(await tumbuhanController.hapusDetailTumbuhan(
+                            idTumbuhan: tumbuhanController.detailTumbuhan.value?.perkembangan[index].id
+                          ) == true){
+                            setState(() {
+                              tumbuhanController.getDataTumbuhan(
+                                id_tumbuhan: widget.id
+                              );
+                            });
+                          }
+                        }
+                    }, icon: Icon(CupertinoIcons.trash)),
+                  ),
+                  itemCount: tumbuhanController.detailTumbuhan.value?.perkembangan.length ?? 0, 
+                  separatorBuilder: (context, index) => const SizedBox(height: 10),
+                  ),
+              )
             ),
           ),
         ),
+        Obx(() => tumbuhanController.isLoading.value == true
+            ? floatingLoading()
+            : const SizedBox()),
       ],
     );
   }

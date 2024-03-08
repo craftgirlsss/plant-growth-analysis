@@ -5,6 +5,7 @@ import 'package:plant_growth/src/components/loadings.dart';
 import 'package:plant_growth/src/controllers/accounts_controller.dart';
 import 'package:plant_growth/src/views/dashboard/dashboard.dart';
 
+import 'dashboard/adding_items.dart';
 import 'setting/setting.dart';
 
 class MainPage extends StatefulWidget {
@@ -92,7 +93,7 @@ class _MainPageState extends State<MainPage> {
               customBorder: const CircleBorder(),
               splashColor: Colors.white10.withOpacity(0.1),
               onTap: () {
-                // Get.to(() => const QRCodePage());
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const AddingItemPage()));
               },
               child: Container(
                 width: 70,
@@ -104,7 +105,7 @@ class _MainPageState extends State<MainPage> {
                   color: Colors.transparent, // material color will cover this
                 ),
                 child: const Icon(
-                  CupertinoIcons.camera,
+                  CupertinoIcons.add,
                   size: 35,
                   color: Colors.black,
                 ),

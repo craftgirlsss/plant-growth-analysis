@@ -58,7 +58,7 @@ class _MyProfileDetailState extends State<MyProfileDetail> {
             onTap: () => focusManager(),
             child: Scaffold(
               appBar: AppBar(
-                title: Text("Ganti Password", style: kDefaultTextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
+                title: Text("Informasiku", style: kDefaultTextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.black),
                 ),
                 backgroundColor: Colors.green.withOpacity(0.1),
                 elevation: 0,
