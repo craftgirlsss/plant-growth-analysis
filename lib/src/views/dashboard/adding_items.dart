@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:plant_growth/src/components/buttons.dart';
 import 'package:plant_growth/src/components/loadings.dart';
 import 'package:plant_growth/src/components/textfield.dart';
+import 'package:plant_growth/src/components/textstyle.dart';
 import 'package:plant_growth/src/controllers/accounts_controller.dart';
 import 'package:plant_growth/src/controllers/tumbuhan_controller.dart';
 import 'package:plant_growth/src/helpers/focus.dart';
@@ -25,6 +26,12 @@ class _AddingItemPageState extends State<AddingItemPage> {
   TextEditingController descriptionController = TextEditingController();
   AccountsController accountsController = Get.find();
   TumbuhanController tumbuhanController = Get.find();
+
+  @override
+  void initState() {
+    super.initState();
+    tumbuhanController.getAllProvince();
+  }
 
   @override
   void dispose() {
@@ -152,12 +159,47 @@ class _AddingItemPageState extends State<AddingItemPage> {
                             hinyText: "Tinggi Tumbuhan (meter)",
                           ),
                           const SizedBox(height: 10),
-                          CustomTextFieldNameBlackForDescription(
-                            readOnly: false,
-                            iconData: Icons.notes_rounded,
+                          TextField(
                             controller: descriptionController,
-                            hinyText: "Deskripsi Tumbuhan",
+                            maxLines: 8, //or null 
+                            decoration: InputDecoration(
+                              fillColor: Colors.black.withOpacity(0.1),
+                              filled: true,
+                              contentPadding: EdgeInsets.all(8),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(5),
+                                borderSide: BorderSide.none
+                              ),
+                              hintText: "Deskripsi tumbuhan"),
                           ),
+                          const SizedBox(height: 20),
+                          Text("Informasi Wilayah", style: kDefaultTextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.black54),),
+                          const SizedBox(height: 10),
+                          CustomTextFieldNameBlack(
+                            readOnly: true,
+                            onTap: (){},
+                            iconData: Icons.place,
+                            controller: heightController,
+                            hinyText: "Provinsi",
+                          ),
+                          const SizedBox(height: 10),
+                          CustomTextFieldNameBlack(
+                            readOnly: true,
+                            onTap: (){},
+                            iconData: Icons.place,
+                            controller: heightController,
+                            hinyText: "Kabupaten",
+                          ),
+                          const SizedBox(height: 10),
+                          CustomTextFieldNameBlack(
+                            readOnly: true,
+                            onTap: (){},
+                            iconData: Icons.place,
+                            controller: heightController,
+                            hinyText: "Kecamatan",
+                          ),
+                          const SizedBox(height: 10),
+                          const SizedBox(height: 30),
                           Obx(
                             () => kDefaultButtons(
                               backgroundColor: Colors.green,

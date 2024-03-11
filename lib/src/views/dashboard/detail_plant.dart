@@ -7,6 +7,7 @@ import 'package:plant_growth/src/controllers/tumbuhan_controller.dart';
 import 'package:plant_growth/src/helpers/focus.dart';
 
 import 'adding_perkembangan.dart';
+import 'details.dart';
 
 class PageDetail extends StatefulWidget {
   final String? title;
@@ -146,6 +147,15 @@ class _PageDetailState extends State<PageDetail> {
               body: Obx(
                 () => ListView.separated(
                   itemBuilder: (context, index) => ListTile(
+                    onTap: (){
+                      Get.to(() => DetailTanamanHarian(
+                        dateTime: tumbuhanController.detailTumbuhan.value?.perkembangan[index].dateTime,
+                        description: tumbuhanController.detailTumbuhan.value!.perkembangan[index].deskripsi,
+                        diameter: tumbuhanController.detailTumbuhan.value!.perkembangan[index].diameter,
+                        tinggi: tumbuhanController.detailTumbuhan.value!.perkembangan[index].tinggi,
+                        urlImage: tumbuhanController.detailTumbuhan.value!.perkembangan[index].imgUrl,
+                      ));
+                    },
                     leading: InkWell(
                       borderRadius: BorderRadius.circular(10),
                       child: Image.network(tumbuhanController.detailTumbuhan.value!.perkembangan[index].imgUrl!, fit: BoxFit.cover, width: 100,),

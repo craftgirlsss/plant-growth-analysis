@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:plant_growth/src/models/detail_tumbuhan_models.dart';
+import 'package:plant_growth/src/models/kabupaten_models.dart';
+import 'package:plant_growth/src/models/kecamatan_models.dart';
+import 'package:plant_growth/src/models/province_models.dart';
 import 'package:plant_growth/src/models/tumbuhan_models.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
@@ -12,6 +15,12 @@ class TumbuhanController extends GetxController{
   var id = ''.obs;
   var tumbuhanModels = Rxn<TumbuhanModels>();
   var detailTumbuhan = Rxn<DetailTumbuhan>();
+  var provinsiModels = Rxn<ProvinsiModels>();
+  var kabupatenModels = Rxn<KabupatenModels>();
+  var kecamatanModels = Rxn<KecamatanModels>();
+  var listProvinsi = [].obs;
+  var listKabupaten = [].obs;
+  var listKecamatan = [].obs;
 
   @override
   void onInit(){
@@ -220,6 +229,62 @@ class TumbuhanController extends GetxController{
       isLoading(false);
       debugPrint(e.toString());
       return false;
+    }
+  }
+
+  // API Get nama wilayah indonesia
+  
+  var idProvince = ''.obs;
+  var idKabupaten = ''.obs;
+  var idKecamatan = ''.obs;
+
+  Future<bool> getAllProvince() async {
+    var baseUrl = "https://pro.rajaongkir.com/api/province";
+
+    http.Response response = await http.get(Uri.parse(baseUrl),
+        headers: {'key': 'e049d10db2bd7fc4d5ec3cb4035633be'});
+
+    if (response.statusCode == 200) {
+      provinsiModels.value = ProvinsiModels.fromJson(jsonDecode(response.body));
+      debugPrint("Data provinsi didapatkan");
+      return true;
+    } else {
+      debugPrint("Gagal mendapatkan data karena status code ${response.statusCode}");
+      throw response.statusCode;
+    }
+  }
+
+  Future<bool> getAllKabupaten() async {
+    print(idProvince.value);
+    var baseUrl =
+        "https://pro.rajaongkir.com/api/city?province=${idProvince.value}";
+
+    http.Response response = await http.get(Uri.parse(baseUrl),
+        headers: {'key': 'e049d10db2bd7fc4d5ec3cb4035633be'});
+
+    if (response.statusCode == 200) {
+      kabupatenModels.value = KabupatenModels.fromJson(jsonDecode(response.body));
+      debugPrint("Data kabupaten didapatkan");
+      return true;
+    } else {
+      throw response.statusCode;
+    }
+  }
+
+  Future<bool> getAllDesa() async {
+    print(idProvince.value);
+    var baseUrl =
+        "https://pro.rajaongkir.com/api/subdistrict?city=${idKecamatan.value}";
+
+    http.Response response = await http.get(Uri.parse(baseUrl),
+        headers: {'key': 'e049d10db2bd7fc4d5ec3cb4035633be'});
+
+    if (response.statusCode == 200) {
+      kecamatanModels.value = KecamatanModels.fromJson(jsonDecode(response.body));
+      debugPrint("Data kecamatan didapatkan");
+      return true;
+    } else {
+      throw response.statusCode;
     }
   }
   
