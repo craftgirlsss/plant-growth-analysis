@@ -24,13 +24,22 @@ class _AddingItemPageState extends State<AddingItemPage> {
   TextEditingController diameterController = TextEditingController();
   TextEditingController heightController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  TextEditingController provinsiController = TextEditingController();
+  TextEditingController kabupatenController = TextEditingController();
+  TextEditingController kecamatanController= TextEditingController();
+  TextEditingController desaController = TextEditingController();
+  
   AccountsController accountsController = Get.find();
   TumbuhanController tumbuhanController = Get.find();
 
   @override
   void initState() {
     super.initState();
-    tumbuhanController.getAllProvince();
+    Future.delayed(const Duration(seconds: 1), ()async{
+      if(await tumbuhanController.getAllProvince()){
+        print("sukses mendapatkan lokasi");
+      };
+    });
   }
 
   @override
@@ -175,30 +184,48 @@ class _AddingItemPageState extends State<AddingItemPage> {
                           const SizedBox(height: 20),
                           Text("Informasi Wilayah", style: kDefaultTextStyle(fontSize: 17, fontWeight: FontWeight.bold, color: Colors.black54),),
                           const SizedBox(height: 10),
-                          CustomTextFieldNameBlack(
-                            readOnly: true,
-                            onTap: (){},
-                            iconData: Icons.place,
-                            controller: heightController,
-                            hinyText: "Provinsi",
+                          Obx(
+                            () => CustomTextFieldNameBlack(
+                              readOnly: true,
+                              onTap: tumbuhanController.isLoadingPlace.value == true ? null : (){
+                                showMyDialogListPlaceProvince(context);
+                              },
+                              iconData: Icons.place,
+                              controller: provinsiController,
+                              hinyText: tumbuhanController.isLoadingPlace.value == true ? "Getting Provinsi" : "Provinsi",
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Obx(
+                            () => CustomTextFieldNameBlack(
+                              readOnly: true,
+                              onTap: tumbuhanController.isLoadingPlace.value == true ? null : (){
+                                showMyDialogListPlaceKabupaten(context);
+                              },
+                              iconData: Icons.place,
+                              controller: kabupatenController,
+                              hinyText: tumbuhanController.isLoadingPlace.value == true ? "Getting Kabupaten" : "Kabupaten",
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Obx(
+                            () => CustomTextFieldNameBlack(
+                              readOnly: true,
+                              onTap: tumbuhanController.isLoadingPlace.value == true ? null : (){
+                                showMyDialogListPlaceKecamatan(context);
+                              },
+                              iconData: Icons.place,
+                              controller: kecamatanController,
+                              hinyText: tumbuhanController.isLoadingPlace.value == true ? "Getting Kecamatan" : "Kecamatan",
+                            ),
                           ),
                           const SizedBox(height: 10),
                           CustomTextFieldNameBlack(
-                            readOnly: true,
-                            onTap: (){},
-                            iconData: Icons.place,
-                            controller: heightController,
-                            hinyText: "Kabupaten",
-                          ),
-                          const SizedBox(height: 10),
-                          CustomTextFieldNameBlack(
-                            readOnly: true,
-                            onTap: (){},
-                            iconData: Icons.place,
-                            controller: heightController,
-                            hinyText: "Kecamatan",
-                          ),
-                          const SizedBox(height: 10),
+                            readOnly: false,
+                              iconData: Icons.place,
+                              controller: desaController,
+                              hinyText: "Desa",
+                            ),
                           const SizedBox(height: 30),
                           Obx(
                             () => kDefaultButtons(
@@ -207,6 +234,10 @@ class _AddingItemPageState extends State<AddingItemPage> {
                                 if(nameController.text.isNotEmpty && genderController.text.isNotEmpty && diameterController.text.isNotEmpty && heightController.text.isNotEmpty && descriptionController.text.isNotEmpty && images != null){
                                   if(await tumbuhanController.tambahDataTumbuhan(
                                     deskripsi: descriptionController.text,
+                                    provinsi: provinsiController.text,
+                                    kabupaten: kabupatenController.text,
+                                    kecamatan: kecamatanController.text,
+                                    desa: desaController.text,
                                     diameter: diameterController.text,
                                     jenis_kelamin_tumbuhan: genderController.text,
                                     nama: nameController.text,
@@ -302,4 +333,96 @@ class _AddingItemPageState extends State<AddingItemPage> {
       ),
     );
   }
+
+  Future<void> showMyDialogListPlaceProvince(context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: true, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Pilih Provinsi'),
+        content: Obx(
+          () => SizedBox(
+            width: 100,
+            child: ListView.builder(
+              itemBuilder: (context, index) => CupertinoListTile(
+                onTap: () async {
+                  debugPrint(tumbuhanController.provinsiModels.value?.rajaongkir.results[index].provinceId);
+                  setState(() {
+                    tumbuhanController.idProvince.value = tumbuhanController.provinsiModels.value!.rajaongkir.results[index].provinceId;
+                    provinsiController.text = tumbuhanController.provinsiModels.value!.rajaongkir.results[index].province;
+                  });
+                  await tumbuhanController.getAllKabupaten();
+                  Navigator.pop(context);
+                },
+                title: Text(tumbuhanController.provinsiModels.value?.rajaongkir.results[index].province ?? 'Unknown')),
+              itemCount: tumbuhanController.provinsiModels.value!.rajaongkir.results.length,
+            ),
+          )
+        ),
+      );
+    },
+  );
+}
+
+Future<void> showMyDialogListPlaceKabupaten(context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: true, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Pilih Kabupaten'),
+        content: Obx(
+          () => SizedBox(
+            width: 100,
+            child: ListView.builder(
+              itemBuilder: (context, index) => CupertinoListTile(
+                onTap: () async {
+                  setState(() {
+                    tumbuhanController.idKecamatan.value = tumbuhanController.kabupatenModels.value!.rajaongkir.results[index].cityId!;
+                    kabupatenController.text = tumbuhanController.kabupatenModels.value!.rajaongkir.results[index].cityName!;
+                  });
+                  // debugPrint(tumbuhanController.provinsiModels.value?.rajaongkir.results[index].provinceId);
+                  await tumbuhanController.getAllDesa();
+                  Navigator.pop(context);
+                },
+                title: Text(tumbuhanController.kabupatenModels.value?.rajaongkir.results[index].cityName ?? 'Unknown')),
+              itemCount: tumbuhanController.kabupatenModels.value!.rajaongkir.results.length,
+            ),
+          )
+        ),
+      );
+    },
+  );
+}
+
+Future<void> showMyDialogListPlaceKecamatan(context) async {
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: true, // user must tap button!
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: const Text('Pilih Kecamatan'),
+        content: Obx(
+          () => SizedBox(
+            width: 100,
+            child: ListView.builder(
+              itemBuilder: (context, index) => CupertinoListTile(
+                onTap: () async {
+                  debugPrint(tumbuhanController.kecamatanModels.value?.rajaongkir.results[index].subdistrictName);
+                  setState(() {
+                    kecamatanController.text = tumbuhanController.kecamatanModels.value!.rajaongkir.results[index].subdistrictName!;
+                  });
+                  Navigator.pop(context);
+                },
+                title: Text(tumbuhanController.kecamatanModels.value?.rajaongkir.results[index].subdistrictName ?? 'Unknown')),
+              itemCount: tumbuhanController.kecamatanModels.value!.rajaongkir.results.length,
+            ),
+          )
+        ),
+      );
+    },
+  );
+}
+
 }

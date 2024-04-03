@@ -40,6 +40,10 @@ class Tumbuhan {
   String? jenisKelaminTumbuhan;
   String? createDate;
   String? imgUrl;
+  String? provinsi;
+  String? kabupaten;
+  String? kecamatan;
+  String? desa;
   
   Tumbuhan.fromJson(Map<String, dynamic> json){
     id = json['id'];
@@ -49,6 +53,10 @@ class Tumbuhan {
     jenisKelaminTumbuhan = json['jenis_kelamin_tumbuhan'];
     createDate = json['create_date'];
     imgUrl = json['img_url'];
+    provinsi = json['provinsi'];
+    kabupaten = json['kabupaten'];
+    kecamatan = json['kecamatan'];
+    desa = json['desa'];
   }
 
   Map<String, dynamic> toJson() {

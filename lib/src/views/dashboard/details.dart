@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:plant_growth/src/components/textstyle.dart';
+import 'package:flutter/widgets.dart';
 
 class DetailTanamanHarian extends StatefulWidget {
   final String? title;
@@ -8,7 +8,8 @@ class DetailTanamanHarian extends StatefulWidget {
   final String? tinggi;
   final String? urlImage;
   final String? dateTime;
-  const DetailTanamanHarian({super.key, this.title, this.description, this.diameter, this.tinggi, this.urlImage, this.dateTime});
+  final String? locationTree;
+  const DetailTanamanHarian({super.key, this.title, this.description, this.diameter, this.tinggi, this.urlImage, this.dateTime, this.locationTree});
 
   @override
   State<DetailTanamanHarian> createState() => _DetailTanamanHarianState();
@@ -46,6 +47,13 @@ class _DetailTanamanHarianState extends State<DetailTanamanHarian> {
             children: [
               Text("Diameter tanaman : ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),),
               Text("${widget.diameter ?? 'Tidak ada deskripsi'} cm"),
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text("Asal tanaman : ", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),),
+              Flexible(child: Text("${widget.locationTree}")),
             ],
           ),
         ],

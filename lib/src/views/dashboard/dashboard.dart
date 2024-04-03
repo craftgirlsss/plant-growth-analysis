@@ -99,6 +99,11 @@ class _DashboardState extends State<Dashboard> {
                           ),
                         ),
                         actions: [
+                          Obx(
+                              () => tumbuhanController.isLoading.value == true ? const Icon(CupertinoIcons.refresh, color: Colors.white) : IconButton(onPressed: () {
+                                tumbuhanController.getListTumbuhan();
+                              }, icon: Icon(CupertinoIcons.refresh, color: Colors.white)),
+                            ),
                           Padding(
                             padding: const EdgeInsets.only(right: 16, top: 5),
                             child: GestureDetector(
@@ -115,56 +120,6 @@ class _DashboardState extends State<Dashboard> {
                             ),
                           )
                         ],
-                        bottom: AppBar(
-                          backgroundColor: Colors.transparent,
-                          elevation: 0,
-                          automaticallyImplyLeading: false,
-                          title: Container(
-                            width: double.infinity,
-                            height: 50,
-                            color: Colors.transparent,
-                            child: Center(
-                              child: Material(
-                                borderRadius: BorderRadius.circular(30),
-                                elevation: 20,
-                                animationDuration:
-                                    const Duration(milliseconds: 500),
-                                shadowColor: Colors.black54,
-                                child: TextFormField(
-                                  controller: searchController,
-                                  keyboardType: TextInputType.text,
-                                  autofocus: false,
-                                  style: kDefaultTextStyle(
-                                      color: Colors.black87, fontSize: 15),
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderSide: BorderSide.none,
-                                      borderRadius: BorderRadius.circular(30.0),
-                                    ),
-                                    filled: true,
-                                    prefixIcon: const Icon(
-                                        CupertinoIcons.search,
-                                        color: Colors.black54),
-                                    // filled: true,
-                                    fillColor: Colors.white,
-                                    hintText: 'Cari',
-                                    hintStyle: kDefaultTextStyle(
-                                        color: Colors.black87, fontSize: 15),
-                                    contentPadding: const EdgeInsets.fromLTRB(
-                                        20.0, 10.0, 20.0, 10.0),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                          actions: [
-                            Obx(
-                              () => tumbuhanController.isLoading.value == true ? const Icon(CupertinoIcons.refresh, color: Colors.white) : IconButton(onPressed: () {
-                                tumbuhanController.getListTumbuhan();
-                              }, icon: Icon(CupertinoIcons.refresh, color: Colors.white)),
-                            )
-                          ],
-                        ),
                       ),
                       // Other Sliver Widgets
                       Obx(

@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 
 class TumbuhanController extends GetxController{
   var isLoading = false.obs;
+  var isLoadingPlace = false.obs;
   var id = ''.obs;
   var tumbuhanModels = Rxn<TumbuhanModels>();
   var detailTumbuhan = Rxn<DetailTumbuhan>();
@@ -67,7 +68,11 @@ class TumbuhanController extends GetxController{
     String? jenis_kelamin_tumbuhan,
     String? diameter,
     String? tinggi,
-    String? urlImage
+    String? urlImage,
+    String? provinsi,
+    String? kabupaten,
+    String? kecamatan,
+    String? desa
   }) async {
     isLoading(true);
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -83,7 +88,11 @@ class TumbuhanController extends GetxController{
       'jenis_kelamin_tumbuhan': jenis_kelamin_tumbuhan ?? 'N/A',
       'user_id': id.value,
       'diameter': diameter ?? '0',
-      'tinggi': tinggi ?? '0'
+      'tinggi': tinggi ?? '0',
+      'provinsi' : provinsi ?? '',
+      'kabupaten' : kabupaten ?? '',
+      'kecamatan' : kecamatan ?? '',
+      'desa' : desa ?? ''
     });
 
     request.files.add(await http.MultipartFile.fromPath('img_file', urlImage!));
@@ -239,16 +248,19 @@ class TumbuhanController extends GetxController{
   var idKecamatan = ''.obs;
 
   Future<bool> getAllProvince() async {
+    isLoadingPlace(true);
     var baseUrl = "https://pro.rajaongkir.com/api/province";
 
     http.Response response = await http.get(Uri.parse(baseUrl),
         headers: {'key': 'e049d10db2bd7fc4d5ec3cb4035633be'});
 
     if (response.statusCode == 200) {
+      isLoadingPlace(false);
       provinsiModels.value = ProvinsiModels.fromJson(jsonDecode(response.body));
       debugPrint("Data provinsi didapatkan");
       return true;
     } else {
+      isLoadingPlace(false);
       debugPrint("Gagal mendapatkan data karena status code ${response.statusCode}");
       throw response.statusCode;
     }
@@ -256,22 +268,27 @@ class TumbuhanController extends GetxController{
 
   Future<bool> getAllKabupaten() async {
     print(idProvince.value);
+    isLoadingPlace(true);
     var baseUrl =
         "https://pro.rajaongkir.com/api/city?province=${idProvince.value}";
 
     http.Response response = await http.get(Uri.parse(baseUrl),
         headers: {'key': 'e049d10db2bd7fc4d5ec3cb4035633be'});
 
+    print(jsonDecode(response.body));
     if (response.statusCode == 200) {
+      isLoadingPlace(false);
       kabupatenModels.value = KabupatenModels.fromJson(jsonDecode(response.body));
       debugPrint("Data kabupaten didapatkan");
       return true;
     } else {
+      isLoadingPlace(false);
       throw response.statusCode;
     }
   }
 
   Future<bool> getAllDesa() async {
+    isLoadingPlace(true);
     print(idProvince.value);
     var baseUrl =
         "https://pro.rajaongkir.com/api/subdistrict?city=${idKecamatan.value}";
@@ -280,10 +297,12 @@ class TumbuhanController extends GetxController{
         headers: {'key': 'e049d10db2bd7fc4d5ec3cb4035633be'});
 
     if (response.statusCode == 200) {
+      isLoadingPlace(false);
       kecamatanModels.value = KecamatanModels.fromJson(jsonDecode(response.body));
       debugPrint("Data kecamatan didapatkan");
       return true;
     } else {
+      isLoadingPlace(false);
       throw response.statusCode;
     }
   }

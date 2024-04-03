@@ -149,6 +149,8 @@ class _PageDetailState extends State<PageDetail> {
                   itemBuilder: (context, index) => ListTile(
                     onTap: (){
                       Get.to(() => DetailTanamanHarian(
+                        title: "Detail Tumbuhan",
+                        locationTree: "${tumbuhanController.tumbuhanModels.value?.tumbuhan[index].provinsi},${tumbuhanController.tumbuhanModels.value?.tumbuhan[index].kabupaten}, ${tumbuhanController.tumbuhanModels.value?.tumbuhan[index].kecamatan}, ${tumbuhanController.tumbuhanModels.value?.tumbuhan[index].desa}",
                         dateTime: tumbuhanController.detailTumbuhan.value?.perkembangan[index].dateTime,
                         description: tumbuhanController.detailTumbuhan.value!.perkembangan[index].deskripsi,
                         diameter: tumbuhanController.detailTumbuhan.value!.perkembangan[index].diameter,
